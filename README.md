@@ -1,7 +1,7 @@
 BouncyBall
 ==========
 
-// 1.	Compile the codes by clicking on the Run button
+// 1.	Compile the code using Processing by clicking on the Run button
 
 // 2.	Hold the mouse’s left button to block the bouncing ball
 
