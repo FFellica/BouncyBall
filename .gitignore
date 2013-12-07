@@ -1,6 +1,204 @@
-*.class
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
 
-# Package Files #
-*.jar
-*.war
-*.ear
+import controlP5.*; 
+import ddf.minim.*; 
+import ddf.minim.signals.*; 
+import ddf.minim.effects.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class App_2 extends PApplet {
+
+//Import controlP5 library;
+
+
+//Import Minim library;
+
+
+//Import Minim Signals;
+
+
+//Import Minim Effects;
+
+
+// Import ControlP5 library with a variable (object)
+// named gui (graphical user interface);
+ControlP5 gui;
+
+//Create variable of Minim
+Minim minim;  
+
+//Create a variable of Audio Output to handle signal output;
+AudioOutput out;
+
+//Create a variable of AudioPlayer type;
+AudioPlayer playerbounce;
+
+//Declate variable of theValue type;
+int theValue;
+
+//Declare variable of rad type equal to 45
+//Width of the shape;
+int rad = 45;
+
+//Declare two variables of xpos and ypos type
+//for the starting position of shape;  
+float xpos, ypos;
+//Create a variable of flot type 
+//to declare the shape's speed on the X axis;
+float xspeed = 10.0f;
+
+//Create a variable of flot type 
+//to declare the shape's speed on the Y axis;
+float yspeed = 10.0f;
+
+// Declare a variable of xdirection type (left or right) 
+//equal to 1;
+int xdirection = 1;
+//Declare a variable of ydirection type (top to bottom) 
+//equal to 1;
+int ydirection = 1;
+
+//Set screen size, the background colour etc;
+public void setup()
+{
+//Set the size of the window;
+  size(600, 420);
+  gui = new ControlP5(this);
+//Disable drawing the outline;
+  noStroke();
+//Specify the number of frames to be displayed every second;
+  frameRate(30);
+  ellipseMode(RADIUS); //it uses the first two parameters of ellipse() as the
+                       //shape's centre point. 3rd and 4th parameters are its width and height;
+  
+//Set the value xpos and ypos (position) by dividing
+//the system variable set by the paramenters of the size() function
+//by 2 according to the two variables, width and height;
+  xpos = width/2;
+  ypos = height/2;
+  minim = new Minim(this);
+//Create in memory a line-out;
+  out = minim.getLineOut(Minim.STEREO);
+
+//Assign sound file to playerbounce;
+playerbounce = minim.loadFile("Bounce.mp3", 1024);
+}
+
+//Function executed repeatedly whenever there is drawing or animation to be done;
+public void draw()
+
+{
+// Draw the background with RGB colours' range between 0 to 255;
+  background(150); //grey background
+//Set the color used to fill shapes;
+  fill(0, 100,255); // Red;
+  
+//Update the position of the shape multiplying the speend and direction of the ball 
+//on the X and Y axis, and adding the result to its position on the X & Y axis;
+  xpos = xpos + ( xspeed * xdirection );
+  ypos = ypos + ( yspeed * ydirection );
+  
+//Condition to see if the shape exceeds the width on the X axes of the screen
+//If it does, reverse its direction by multiplying by -1;
+  if (xpos > width-rad || xpos < rad) //
+  {
+//Assignment operation to decreases the value of xdirection by -1;
+    xdirection *= -1; 
+    
+//playerbounce plays the assigned audio once as the ball goes to +1 in the X axis;
+    playerbounce.play();
+//playerbounce rewinds the assigned audio as the ball goes to +1 in the X axis ;   
+    playerbounce.rewind();
+//Write into the text area of the Processing environment's console
+//to look at the data the program is producing;    
+    println("Bounce");
+  }
+  
+//Condition to see if the shape exceeds the width on the X axes of the screen
+//If it does, reverse its direction by multiplying by +1
+   if (xpos > width-rad || xpos < rad) 
+  {
+//Assignment operation to increment the value of xdirection by +1;
+    xdirection *= +1;
+    
+//playerbounce plays the assigned audio file everytime the ball goes to +1 in the X axis;
+    playerbounce.play();
+//playerbounce rewiinds the assigned audio file everytime the ball goes to +1 in the X axis;
+    playerbounce.rewind();
+//Write Bounce into the text area of the Processing environment's console
+//to look at the data the program is producing;
+    println("Bounce");
+  }
+//Condition to see if the shape exceeds the height on the Y axes of the screen
+// If it does, reverse its direction by multiplying by -1;
+  if (ypos > height-rad || ypos < rad)
+  {
+ //Assignment operation to decrease the value of ydirection by -1;
+    ydirection *= -1;
+    
+//playerbounce plays the assigned audio file everytime the ball goes to -1 in the Y axis;
+    playerbounce.play();
+//playerbounce rewiinds the assigned audio file everytime the ball goes to -1 in the Y axis;
+    playerbounce.rewind();
+//Write Bounce into the text area of the Processing environment's console
+//to look at the data the program is producing;
+    println("Bounce");
+  }
+  //Condition to see if the shape exceeds the width on the Y axes of the screen
+  // If it does, reverse its direction by multiplying by +1;
+ if (ypos > width-rad || ypos < rad)
+  {
+    ydirection *= +1; //an assignment operation that increments the value of ydirection by +1;
+    
+//playerbounce plays the assigned audio file everytime the ball goes to -1 in the Y axis;
+    playerbounce.play();
+//playerbounce rewinds the assigned audio file everytime the ball goes to -1 in the Y axis;
+    playerbounce.rewind();
+//Write Bounce into the text area of the Processing environment's console
+//to look at the data the program is producing;
+    println("Bounce");
+  }
+//Draw a round shape;
+  ellipse(xpos, ypos, rad, rad);
+}  
+
+//Add a mouse drag, when it happens, mouseDragged is executed;
+public void mouseDragged () 
+{
+xpos = mouseX; 
+ypos = mouseY;
+//Write Drag into the text area of the Processing environment's console
+//to look at the data the program is producing;
+println("Drag");
+}
+
+//Function executed when the stop button is pressed
+//it ensures that the program comes to an end when quitted;
+public void stop()
+
+{ 
+//always close Minim audio classes when you are done with them;
+out.close();
+playerbounce.close();
+minim.stop();
+super.stop();
+}
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "App_2" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
